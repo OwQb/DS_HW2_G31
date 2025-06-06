@@ -15,7 +15,7 @@ Pop()//時間複雜度應為O(log n)
 1. 寫一個程序，從一棵原本為空的二元搜尋樹開始，並進行 n 次隨機插入。使用均勻隨機數產生器來取得要插入的值。測量產生的二元搜尋樹的高度並將該高度除以 log2n。
 對 n = 100, 500, 1000, 2000, 3000, ..., 10,000 執行此操作。繪製比率高度 log2n 作為 n 的函數。此比率應大致恆定（約2）。驗證這是否是這樣。  
 2. 寫一個 C++ 函數，從二元搜尋樹中刪除鍵為k的對。你的函數的時間複雜度是多少？
-### 題目三:緩衝區演算法計算  
+### 題目三:緩衝區演算法  
 【緩衝區演算法的步驟】 
 |---|
 |步驟1:輸入所有k個行程的第一個區塊,建立k個鏈結佇列,每個都有一個區塊的資料。把其餘的k個輸入區塊放入一個鏈結堆疊,裡頭都是閒置的輸入區塊。設定ou為0。|
@@ -91,7 +91,40 @@ Max/Min Heap的抽象類都是相同的，只是內部執行的程序不同，�
    刪除時會先搜尋目標節點 key ，其時間複雜度是與高度成正比，隨後可能需要找後繼節點（即右子樹最小值） 也是一條向下走的路徑，最後更新指標、刪除節點。  
    若樹的高度為 h，則：搜尋、插入、刪除的最壞時間複雜度皆為 O(h)，在隨機 BST 中，h ≈ c * log(n)，  
    因此刪除的期望時間為 log(n)。
-
+### 緩衝區演算法計算
+1. 外部排序第二回合的目標是把所有 m 個行程透過多次 k-way merge 合併成一個完整排序的行程。假設一次合併 k 個行程，就會有：  
+合併次數（rounds）≈ ⌈log<sub>k</sub> m⌉<br><br>
+總輸入時間 t_input，也就是把所有 n 筆資料從磁碟讀入主記憶體所花費的時間，    
+每次從磁碟讀一個區塊的時間包含：  
+搜尋時間 t<sub>s</sub>  
+延遲時間 t<sub>1</sub>  
+傳送時間 n ． t<sub>t</sub>  
+總共需要讀取 n 筆資料，在合併過程中每筆資料都要至少讀一次。<br><br> 
+所以總輸入時間為：t<sub>input</sub> = ( ${n} \over  {B}$ ) ． (t<sub>s</sub> + t<sub>1</sub>) + n ． t<sub>t</sub>
+其中：  
+B 是區塊大小（每次讀入多少筆記錄）  
+${n} \over  {B}$ 是總共要進行多少次磁碟 I/O 區塊讀取  
+但根據題意，記憶體大小為 S，且分為 k 個輸入緩衝區 + 1 個輸出緩衝區，所以每個緩衝區大小約為：  
+B = ${S} \over  {k+1}$  
+代入後，輸入區塊數量為：  
+${n} \over  {B}$ = ${n(k+1)} \over  {S}$<br><br> 
+**因此總輸入時間為：  
+t<sub>input</sub>(k) = ${n(k+1)} \over {S}$ ． (t<sub>s</sub> + t<sub>1</sub>) + n ． t<sub>t</sub><br><br>**
+2. 根據題目已知  
+t<sub>s</sub>  = 80 ms = 0.08 秒  
+t<sub>1</sub>  = 20 ms = 0.02 秒  
+t<sub>t</sub>  = $10^{-3}$ = 0.001秒/記錄  
+n = 200000  
+S = 2000（記憶體可放 2000 筆記錄）<br><br>
+代入總輸入時間公式：  
+t<sub>input</sub>(k) = ${200000(k+1)} \over {2000}$ ． (0.02 + 0.08) + 200000 ． 0.001  
+化簡：  
+t<sub>input</sub>(k) = 100(k+1)(0.1)+200 = 10(k+1)+200 = 10k+210 秒<br><br>
+檢驗是否存在使得 t_cpu ≈ t_input 的 k 值可以先假設：
+t_cpu = 500 秒  
+帶入公式：  
+t<sub>input</sub>(k) ⇒ t<sub>cpu</sub> 10k+210=500 ⇒ k = ${290} \over {10}$ = 29<br><br>
+**所以的確存在某個 k 值使得 t_input ≈ t_cpu，這個 k 值可以透過解方程來找出，並達成 CPU 與 I/O 負載平衡**
 ## 程式實作
 ### Max/Min Heap實作
 #### PQ抽象類別
@@ -139,26 +172,39 @@ Max/Min Heap的抽象類都是相同的，只是內部執行的程序不同，�
 |![Not_Found](/homework/report_image/BenchmarkHeap_02.png)|**從n[0]跑到陣列結束，建立一個空的 Heap 後用隨機數填滿樹**|
 |![Not_Found](/homework/report_image/BenchmarkHeap_03.png)|**因為單次運行時間過短難以進行量測，所以執行repeat = 10000次後取平均數**|
 |![Not_Found](/homework/report_image/BenchmarkHeap_04.png)|**採用n[0]的量測值作為之後的推測，並輸出結果**|
-#### main函式
+#### main 函式
 |![Not_Found](/homework/report_image/MaxMinHeapmain.png)|執行Max/Min Heap測試函式|
 |:----------------------------------------------|:-----------------------------------------|
 ### Binary Search Tree實作
-#### xx函式
-|![Not_Found](/homework/report_image/.png)|xx函式<br>說明|
+#### 抽象類別 Dictionary<K, E>
+|![Not_Found](/homework/report_image/BST_Dictionary.png)|抽象類別 Dictionary<K, E>，是所有字典類別的接口，包含以下純虛擬函式：<brIsEmpty(): 判斷字典是否為空。<br>Get(const K&): 依照 key 取得對應的 pair<K, E> 指標，如果不存在則回傳 nullptr。<br>Insert(const pair<K, E>&): 插入一筆鍵值對（key-value pair）。若 key 已存在則更新值。<br>Delete(const K&): 根據 key 刪除一筆鍵值對。<br>|
 |:----------------------------------------------|:-----------------------------------------|
-#### xx函式
-|![Not_Found](/homework/report_image/.png)|xx函式<br>說明|
+#### 節點類別 TreeNode<K, E>
+|![Not_Found](/homework/report_image/BST_TreeNode.png)|每個節點包含left 和 right 指標，指向左右子節點，一個 pair<K, E> 型別的 data 成員，儲存該節點的 key 與對應 value，節點建構子會以傳入的 pair<K,E> 初始化鍵值對資料，其左右子節點初始為 nullptr。|
 |:----------------------------------------------|:-----------------------------------------|
-#### xx函式
-|![Not_Found](/homework/report_image/.png)|xx函式<br>說明|
+#### 實現 Dictionary<K,E> 的函式
+|![Not_Found](/homework/report_image/BST_D.png)|使用 二元搜尋樹 (BST) 作為內部資料結構：<br>root 是整棵樹的根節點。<br>clearTree() 是遞迴的私有函式，用來在解構時釋放所有節點，防止記憶體洩漏。<br>|
 |:----------------------------------------------|:-----------------------------------------|
-#### xx函式
-|![Not_Found](/homework/report_image/.png)|xx函式<br>說明|
+|![Not_Found](/homework/report_image/TN_insertNode.png)|**遞迴插入節點的函式 insertNode()：<br>若目前節點為空，則直接建立一個新節點。<br>若新 key 比目前節點的 key 小，就往左子樹遞迴插入。<br>若新 key 大，則往右子樹插入。<br>若 key 相同，則直接更新 value<br>**|
+#### findNode 和 findMin 函式
+|![Not_Found](/homework/report_image/TN_findNode_findMin.png)|findNode 搜尋時可以像「二分搜尋」一樣往左或右子樹遞迴：<br>若 key < node->data.first：往左子樹找。<br>若 key > node->data.first：往右子樹找。<br>若相等：表示找到了，回傳該節點。<br><br>findMin 用來找到某個子樹中最小值節點，通常用在刪除節點時需要找中序後繼（successor）的情境：<br>BST 中最小值：一定在最左邊的節點。<br>所以只要一路往左找，直到 node->left == nullptr，就找到了最小值節點。|
 |:----------------------------------------------|:-----------------------------------------|
+#### deleteNode 函式
+|![Not_Found](/homework/report_image/TN_deleteNode.png)|刪除節點的遞迴函式，分三種情況處理：<br>若該節點無子節點：直接刪除。<br>若只有一個子節點：用其子節點取代。<br>若有兩個子節點：找右子樹的最小值（後繼），取代該節點，再遞迴刪除後繼節點。<br>|
+|:----------------------------------------------|:-----------------------------------------|
+####  computeHeight 函式和定義BSTDictionary類別裡的介面函式
+|![Not_Found](/homework/report_image/computeHeight.png)|computeHeight 如果目前節點是空的，回傳 0（代表子樹高度為 0）否則：<br>遞迴算出左子樹的高度 leftH。<br>遞迴算出右子樹的高度 rightH。<br>取兩者的較大值，再加上 1（代表目前這一層），就是整棵子樹的高度。<br><br>四個介面函式：<br>IsEmpty()：若 root 是 nullptr，表示 BST 裡沒有任何節點。<br>Insert(const pair<K, E>& entry)：調用私有的遞迴函式 insertNode ，若 key 已存在則更新 value，否則根據 BST 的規則插入到正確位置。<br>Delete(const K& key)：調用私有遞迴函式 deleteNode ，根據 BST 的性質找出該 key 並進行刪除。<br>Get(const K& key)：使用私有遞迴函式 findNode 進行查找，如果找到對應節點回傳其 data 的位址。<br>|
+|:----------------------------------------------|:-----------------------------------------|
+#### main 函式
+|![Not_Found](/homework/report_image/BST_main_01.png)|要測試的各項 n 值，並設定亂數|
+|:----------------------------------------------|:-----------------------------------------|
+|![Not_Found](/homework/report_image/BST_main_02.png)|**建立一棵新的 BST ，隨機產生 n 個不重複 key 並插入 BST，同時記錄 key 以便後續刪除 ，隨後計算樹的實際高度、理論值 log n 和它們的比值，隨機從插入過的 key 中選一個，並進行刪除時間的測量，重複 10000 次後計算平均刪除時間**|
+|![Not_Found](/homework/report_image/BST_main_03.png)|**根據首次執行的時間進行推斷，並輸出結果**|
+
 ## 測試與驗證
-
 ### 測試輸出結果
-
+|![Not_Found](/homework/report_image/.png)|xxx|
+|:----------------------------------------------|:-----------------------------------------|
 ## 申論及開發報告
 
 ### 申論
