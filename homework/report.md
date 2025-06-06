@@ -93,48 +93,55 @@ Max/Min Heap的抽象類都是相同的，只是內部執行的程序不同，�
    因此刪除的期望時間為 log(n)。
 
 ## 程式實作
+## 程式實作
 ### Max/Min Heap實作
 #### PQ抽象類別
-|![Not_Found](/homework/report_image/MaxMinPQ.png)|xx函式<br>說明|
+|![Not_Found](/homework/report_image/MaxMinPQ.png)|定義四個純虛擬函式和Max/Min Heap共用：<br>IsEmpty()：判斷是否為空。<br>Top()：回傳堆頂元素（最小值或最大值）。<br>Push()：插入元素。<br>Pop()：刪除堆頂元素。|
 |:----------------------------------------------|:-----------------------------------------|
 #### MinHeap 繼承抽象基底類別 PQ<T>
-|![Not_Found](/homework/report_image/MinPQ.png)|xx函式<br>說明|
+|![Not_Found](/homework/report_image/MinPQ.png)|封裝了 MinHeap 的資料結構與基本操作)，使用陣列（從 index 1 開始）儲存二元樹結構，並且插入與刪除都保持MinHeap的性質（每個節點都小於等於其子節點），可自動擴充容量以支援更多元素，和提供抽象基底類別 PQ 介面。|
 |:----------------------------------------------|:-----------------------------------------|
 #### MinHeap 類別的建構子
-|![Not_Found](/homework/report_image/MinHeap.png)|xx函式<br>說明|
+|![Not_Found](/homework/report_image/MinHeap.png)|檢查使用者輸入的容量是否合理，並且初始化內部狀態（容量、當前堆大小），配置記憶體空間來儲存堆的元素（從 index 1 開始使用，以便維持二元樹的結構性質）。|
 |:----------------------------------------------|:-----------------------------------------|
 #### MinHeap 類別中成員函式 Top()
-|![Not_Found](/homework/report_image/MinTop.png)|xx函式<br>說明|
+|![Not_Found](/homework/report_image/MinTop.png)|傳回堆頂元素（最小元素）若堆為空，會丟出例外。|
 |:----------------------------------------------|:-----------------------------------------|
 #### MinHeap 類別中的私有輔助函式 ChangeSize1D()
-|![Not_Found](/homework/report_image/MinChangeSize1D.png)|xx函式<br>說明|
+|![Not_Found](/homework/report_image/MinChangeSize1D.png)|當堆滿了，就將容量擴充為原來的兩倍，並且檢查 newSize，避免記憶體洩漏。|
 |:----------------------------------------------|:-----------------------------------------|
 #### MinHeap 類別中的插入函式 Push()
-|![Not_Found](/homework/report_image/MinPush.png)|xx函式<br>說明|
+|![Not_Found](/homework/report_image/MinPush.png)|當堆滿了，就將容量擴充為原來的兩倍，並且將新元素放在最尾端（heapSize + 1），隨後自底向上比較父節點與 e，進行上浮調整倍，然後找到正確位置後放入 e 。|
 |:----------------------------------------------|:-----------------------------------------|
 #### MinHeap 類別中的刪除堆頂元素函式 Pop()
-|![Not_Found](/homework/report_image/MinPop.png)|xx函式<br>說明|
+|![Not_Found](/homework/report_image/MinPop.png)|若堆空，拋出例外，取出最後一個元素 lastE 來替代堆頂，並且自頂向下調整（用較小的子節點遞補），最後將 lastE 放入適當位置。|
 |:----------------------------------------------|:-----------------------------------------|
 #### MaxHeap 繼承抽象基底類別 PQ<T>
-|![Not_Found](/homework/report_image/MaxPQ.png)|xx函式<br>說明|
+|![Not_Found](/homework/report_image/MaxPQ.png)|封裝了 MaxHeap 的資料結構與基本操作，使用陣列（從 index 1 開始）儲存完全二元樹結構，並在插入與刪除時維持最大堆的性質（每個節點都大於等於其子節點），可自動擴充容量以容納更多元素，和提供抽象基底類別 PQ 介面。|
 |:----------------------------------------------|:-----------------------------------------|
 #### MaxHeap 類別的建構子
-|![Not_Found](/homework/report_image/MaxHeap.png)|xx函式<br>說明|
+|![Not_Found](/homework/report_image/MaxHeap.png)|檢查使用者輸入的容量是否合理，並且初始化內部狀態（容量、當前堆大小），配置記憶體空間來儲存堆的元素（從 index 1 開始使用，以便維持二元樹的結構性質）。|
 |:----------------------------------------------|:-----------------------------------------|
 #### MaxHeap 類別中成員函式 Top()
-|![Not_Found](/homework/report_image/MaxTop.png)|xx函式<br>說明|
+|![Not_Found](/homework/report_image/MaxTop.png)|傳回堆頂元素（最大元素），若堆為空，會丟出例外。|
 |:----------------------------------------------|:-----------------------------------------|
 #### MaxHeap 類別中的私有輔助函式 ChangeSize1D()
-|![Not_Found](/homework/report_image/MaxChangeSize1D.png)|xx函式<br>說明|
+|![Not_Found](/homework/report_image/MaxChangeSize1D.png)|當堆滿了，就將容量擴充為原來的兩倍，並且檢查 newSize，避免記憶體洩漏。|
 |:----------------------------------------------|:-----------------------------------------|
 #### MaxHeap 類別中的插入函式 Push()
-|![Not_Found](/homework/report_image/MaxPush.png)|xx函式<br>說明|
+|![Not_Found](/homework/report_image/MaxPush.png)|當堆滿了，就將容量擴充為原來的兩倍，再將新元素插入尾端，並自底向上與父節點比較，若比父節點大則進行上浮，直到符合最大堆的性質，最後將新元素放入正確位置。|
 |:----------------------------------------------|:-----------------------------------------|
 #### MaxHeap 類別中的刪除堆頂元素函式 Pop()
-|![Not_Found](/homework/report_image/MaxPop.png)|xx函式<br>說明|
+|![Not_Found](/homework/report_image/MaxPop.png)|若堆為空則拋出例外，否則取出最後一個元素作為替代堆頂的值，從頂部開始與兩個子節點中較大的節點比較，若小於子節點則下沉交換，最後放入正確位置以維持最大堆性質。|
 |:----------------------------------------------|:-----------------------------------------|
+#### xx函式
+|![Not_Found](/homework/report_image/BenchmarkHeap_01.png)|建立n = 1000, 2000, 3000,... ,10000的陣列和設定repeat = 10000測試次數|
+|:----------------------------------------------|:-----------------------------------------|
+|![Not_Found](/homework/report_image/BenchmarkHeap_02.png)|**從n[0]跑到陣列結束，建立一個空的 Heap 後用隨機數填滿樹**|
+|![Not_Found](/homework/report_image/BenchmarkHeap_03.png)|**因為單次運行時間過短難以進行量測，所以執行repeat = 10000次後取平均數**|
+|![Not_Found](/homework/report_image/BenchmarkHeap_04.png)|**採用n[0]的量測值作為之後的推測，並輸出結果**|
 #### main函式
-|![Not_Found](/homework/report_image/MaxMinHeapmain.png)|xx函式<br>說明|
+|![Not_Found](/homework/report_image/MaxMinHeapmain.png)|執行Max/Min Heap測試函式|
 |:----------------------------------------------|:-----------------------------------------|
 ### Binary Search Tree實作
 #### xx函式
