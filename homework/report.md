@@ -120,11 +120,11 @@ S = 2000（記憶體可放 2000 筆記錄）<br><br>
 t<sub>input</sub>(k) = ${200000(k+1)} \over {2000}$ ． (0.02 + 0.08) + 200000 ． 0.001  
 化簡：  
 t<sub>input</sub>(k) = 100(k+1)(0.1)+200 = 10(k+1)+200 = 10k+210 秒<br><br>
-檢驗是否存在使得 t_cpu ≈ t_input 的 k 值可以先假設：
-t_cpu = 500 秒  
+檢驗是否存在使得 t<sub>cpu</sub> ≈ t<sub>input</sub> 的 k 值可以先假設：
+t<sub>cpu</sub> = 500 秒  
 帶入公式：  
 t<sub>input</sub>(k) ⇒ t<sub>cpu</sub> 10k+210=500 ⇒ k = ${290} \over {10}$ = 29<br><br>
-**所以的確存在某個 k 值使得 t_input ≈ t_cpu，這個 k 值可以透過解方程來找出，並達成 CPU 與 I/O 負載平衡**
+**得知當t<sub>cpu</sub>=500時 k = 29 ，所以的確存在某個 k 值使得 t_input ≈ t_cpu，這個 k 值可以透過解方程來找出，並達成 CPU 與 I/O 負載平衡**
 ## 程式實作
 ### Max/Min Heap實作
 #### PQ抽象類別
