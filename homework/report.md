@@ -218,7 +218,8 @@ t<sub>input</sub>(k) ⇒ t<sub>cpu</sub> 10k+210=500 ⇒ k = ${290} \over {10}$ 
 
 ### 繪製總輸入時間t<sub>input</sub>對k的函數圖形
 ![Not_Found](/homework/report_image/Figure_1.png)
-▲當t<sub>cpu</sub> = 500時，和函數交點在k = 29處，和計算相符
+▲當t<sub>cpu</sub> = 500時，函數交點在k = 29處，和計算相符
+
 ## 申論及開發報告
 
 ### 申論
