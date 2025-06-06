@@ -203,8 +203,14 @@ t<sub>input</sub>(k) ⇒ t<sub>cpu</sub> 10k+210=500 ⇒ k = ${290} \over {10}$ 
 
 ## 測試與驗證
 ### 測試輸出結果
-|![Not_Found](/homework/report_image/.png)|xxx|
-|:----------------------------------------------|:-----------------------------------------|
+|![Not_Found](/homework/report_image/MaxMinHeap_output.png)|
+|----------------------------------------------|
+
+|![Not_Found](/homework/report_image/BST_output.png)|
+|----------------------------------------------|
+
+|![Not_Found](/homework/report_image/Figure_1.png)|
+|----------------------------------------------|
 ## 申論及開發報告
 
 ### 申論
