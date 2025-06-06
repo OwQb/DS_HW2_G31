@@ -93,7 +93,6 @@ Max/Min Heap的抽象類都是相同的，只是內部執行的程序不同，�
    因此刪除的期望時間為 log(n)。
 
 ## 程式實作
-## 程式實作
 ### Max/Min Heap實作
 #### PQ抽象類別
 |![Not_Found](/homework/report_image/MaxMinPQ.png)|定義四個純虛擬函式和Max/Min Heap共用：<br>IsEmpty()：判斷是否為空。<br>Top()：回傳堆頂元素（最小值或最大值）。<br>Push()：插入元素。<br>Pop()：刪除堆頂元素。|
