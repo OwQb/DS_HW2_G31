@@ -202,15 +202,23 @@ t<sub>input</sub>(k) ⇒ t<sub>cpu</sub> 10k+210=500 ⇒ k = ${290} \over {10}$ 
 |![Not_Found](/homework/report_image/BST_main_03.png)|**根據首次執行的時間進行推斷，並輸出結果**|
 
 ## 測試與驗證
-### 測試輸出結果
-|![Not_Found](/homework/report_image/MaxMinHeap_output.png)|
-|----------------------------------------------|
+### 測試Max/Min Heap輸出結果
+![Not_Found](/homework/report_image/MaxMinHeap_output.png)
 
-|![Not_Found](/homework/report_image/BST_output.png)|
-|----------------------------------------------|
+### 繪製Max/Min Heap時間複雜度折線圖
+![Not_Found](/homework/report_image/MinHeap_im.png)
+![Not_Found](/homework/report_image/MaxHeap_im.png)
+▲除了幾個少數的異常值之外，大致上和預測的結果相符
+### 測試Binary Search Tree輸出結果
+![Not_Found](/homework/report_image/BST_output.png)
 
-|![Not_Found](/homework/report_image/Figure_1.png)|
-|----------------------------------------------|
+### 繪製DeleteTime時間複雜度折線圖
+![Not_Found](/homework/report_image/DeleteTime_im.png)
+▲和預測的期望時間 log(n) 大致相符
+
+### 繪製總輸入時間t<sub>input</sub>對k的函數圖形
+![Not_Found](/homework/report_image/Figure_1.png)
+▲當t<sub>cpu</sub> = 500時，和函數交點在k = 29處，和計算相符
 ## 申論及開發報告
 
 ### 申論
